@@ -3,7 +3,6 @@
 using namespace std;
 
 
-
 const int SIZE = 8; // Checker Board 8 x 8
 
 void intializeBoard(char board[SIZE][SIZE]) 
@@ -81,6 +80,4 @@ int main()
 
 
     printBoard(board); // Print Board with current values
-
-    return 0;
 }
