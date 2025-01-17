@@ -1,8 +1,6 @@
 # Overview
 
-{Important!  Do not say in this section that this is college assignment.  Talk about what you are trying to accomplish as a software engineer to further your learning.}
-
-helllo!
+For this coding project we are practicing using C++ to create a checkers board game.
 
 {Provide a description of your software}
 
