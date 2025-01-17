@@ -5,7 +5,7 @@ using namespace std;
 
 const int SIZE = 8; // Checker Board 8 x 8
 
-void intializeBoard(char board[SIZE][SIZE]) 
+void initializeBoard(char board[SIZE][SIZE]) 
 {
     for (int i = 0; i < SIZE; i++)  // i = Rows
     {
@@ -76,7 +76,7 @@ void printBoard(char board[SIZE][SIZE]) // Prints Board with Current Values
 int main()
 {
     char board[SIZE][SIZE]; // Create Board
-    intializeBoard(board); // Call intializeBoard to start
+    initializeBoard(board); // Call intializeBoard to start
 
 
     printBoard(board); // Print Board with current values
