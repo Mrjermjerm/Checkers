@@ -52,20 +52,20 @@ void initializeBoard(char board[SIZE][SIZE])
 void printBoard(char board[SIZE][SIZE]) // Prints Board with Current Values
 {
     cout << endl; // Space Above Board
-    cout << "    A   B   C   D   E   F   G   H " << endl; // Coulmn Index for Board
-    cout << "  |---|---|---|---|---|---|---|---|\n";
+    cout << "    A    B    C    D    E    F    G    H " << endl; // Coulmn Index for Board
+    cout << "  |----|----|----|----|----|----|----|----|\n";
     for (int i = 0; i < SIZE; i++)
     {
-        cout << i << "   "; // Prints Row Index followed By Spacing for Board
+        cout << i << " | "; // Prints Row Index followed By Spacing for Board
         for (int j = 0; j < SIZE; j++)
         {
             cout << board[i][j];
-            if (j < SIZE -1) cout << " | "; // Vertical Seperator
+            if (j < SIZE -1) cout << "  | "; // Vertical Seperator
         }
         cout << endl; // Next Row
-        if (i < SIZE -1) cout << "  |---|---|---|---|---|---|---|---|\n";
+        if (i < SIZE -1) cout << "  |----|----|----|----|----|----|----|----|\n";
     }
-    cout << "  |---|---|---|---|---|---|---|---|";
+    cout << "  |----|----|----|----|----|----|----|----|";
     cout << endl; // Space After Board
 }
 
