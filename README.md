@@ -1,23 +1,21 @@
 # Overview
 
-{Important!  Do not say in this section that this is college assignment.  Talk about what you are trying to accomplish as a software engineer to further your learning.}
+This C++ project implements a classic checkers game that runs in the console. The game features a standard 8x8 board where two players can compete against each other by moving pieces diagonally and capturing opponent pieces by jumping over them.
 
-{Provide a description of your software}
+The software includes an 8x8 game board representation using ascii keys with visual display of the location of each piece in the console.
+Player turn management (X and O pieces), and move validation for regular and capture moves are tracked and stored in the arrays for each location. User input is handled with chess-like notation (e.g., "B2 C3"), of where it is and where the player wants to play.
 
-{Describe your purpose for creating this software.}
-
-{Provide a link to your YouTube demonstration.  It should be a one minute demo of the software running and a walkthrough of the code.}
-
-[Software Demo Video](http://youtube.link.goes.here)
+The primary purposes of this project was to learn some fundementals of C++ programming with 2D array manipulation, practice implementing game logic and management, and receive and use user input and  interaction with the system.
 
 # Development Environment
 
-{Describe the tools that you used to develop the software}
+Some tools used were Visual Studio Code, Xcode, or another IDE that runs C++. A G++ or MinGW Compiler was used for...compiling. 
+Git was used as our code HQ for version control.
 
-{Describe the programming language that you used}
+The project is written in C++ and utilizes standard input/output streams (iostream), 2D arrays for board representation, control structures (loops, conditionals), functions for modularity, and basic object-oriented programming concepts.
 
 # Useful Websites
 
-{Make a list of websites that you found helpful in this project}
-* [Web Site Name](http://url.link.goes.here)
-* [Web Site Name](http://url.link.goes.here)
+* [CPlusPlus](http://CPlusPlus.com)
+* [Stack Overflow](https://stackoverflow.com)
+* [GitHub](https://github.com)
