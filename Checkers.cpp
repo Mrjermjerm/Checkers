@@ -1,56 +1,99 @@
+//
+//  main.cpp
+//  Sprint 1 - Checkers
+//
+//  Created by Bryce Langford on 1/17/25.
+//
 
 #include <iostream>
 using namespace std;
 
-
 const int SIZE = 8; // Checker Board 8 x 8
 
-void intializeBoard(char board[SIZE][SIZE]) 
+bool isValidMove(char board[SIZE][SIZE], int fromRow, int fromCol, int toRow, int toCol, char player);
+void makeMove(char board[SIZE][SIZE], int fromRow, int fromCol, int toRow, int toCol);
+bool canCapture(char board[SIZE][SIZE], int row, int col, char player);
+
+void displayTitleScreen() {
+    cout << R"(
+  ▄████▄   ██░ ██ ▓█████  ▄████▄   ██ ▄█▀▓█████  ██▀███    ██████ 
+ ▒██▀ ▀█  ▓██░ ██▒▓█   ▀ ▒██▀ ▀█   ██▄█▒ ▓█   ▀ ▓██ ▒ ██▒▒██    ▒ 
+ ▒▓█    ▄ ▒██▀▀██░▒███   ▒▓█    ▄ ▓███▄░ ▒███   ▓██ ░▄█ ▒░ ▓██▄   
+ ▒▓▓▄ ▄██▒░▓█ ░██ ▒▓█  ▄ ▒▓▓▄ ▄██▒▓██ █▄ ▒▓█  ▄ ▒██▀▀█▄    ▒   ██▒
+ ▒ ▓███▀ ░░▓█▒░██▓░▒████▒▒ ▓███▀ ░▒██▒ █▄░▒████▒░██▓ ▒██▒▒██████▒▒
+ ░ ░▒ ▒  ░ ▒ ░░▒░▒░░ ▒░ ░░ ░▒ ▒  ░▒ ▒▒ ▓▒░░ ▒░ ░░ ▒▓ ░▒▓░▒ ▒▓▒ ▒ ░
+   ░  ▒    ▒ ░▒░ ░ ░ ░  ░  ░  ▒   ░ ░▒ ▒░ ░ ░  ░  ░▒ ░ ▒░░ ░▒  ░ ░
+ ░         ░  ░░ ░   ░   ░        ░ ░░ ░    ░     ░░   ░ ░  ░  ░  
+ ░ ░       ░  ░  ░   ░  ░░ ░      ░  ░      ░  ░   ░           ░  
+ ░                       ░                                          
+
+                    『 STRATEGIC BOARD BATTLES 』
+                      Press Enter to Begin)" << endl;
+    
+    cin.clear(); // Clear input buffer
+    cin.ignore();
+}
+
+void initializeBoard(char board[SIZE][SIZE])
 {
     for (int i = 0; i < SIZE; i++)  // i = Rows
     {
         for (int j = 0; j < SIZE; j++) // j = Coulmns
         {
             board[i][j] = ' '; // Start with all cells as empty
+
+            // Player X
+//            board[0][1] = 'X'; // Top Row
+//            board[0][3] = 'X';
+//            board[0][5] = 'X';
+//            board[0][7] = 'X';
+//
+//            board[1][0] = 'X'; // Middle Row
+//            board[1][2] = 'X';
+//            board[1][4] = 'X';
+//            board[1][6] = 'X';
+//
+//            board[2][1] = 'X'; // Bottom Row
+//            board[2][3] = 'X';
+//            board[2][5] = 'X';
+//            board[2][7] = 'X';
+//
+//            //board[3][4] = 'A'; // Archerer (test piece)
+//            
+//            // Player O
+//            board[7][0] = 'O'; // Bottom Row
+//            board[7][2] = 'O';
+//            board[7][4] = 'O';
+//            board[7][6] = 'O';
+//
+//            board[6][1] = 'O'; // Middle Row
+//            board[6][3] = 'O';
+//            board[6][5] = 'O';
+//            board[6][7] = 'O';
+//
+//            board[5][0] = 'O'; // Top Row
+//            board[5][2] = 'O';
+//            board[5][4] = 'O';
+//            board[5][6] = 'O';
+            
+            
+            // Simulate near-endgame
+                board[0][1] = ' '; board[0][3] = ' '; board[0][5] = ' '; board[0][7] = ' '; // Top row empty
+                board[1][0] = ' '; board[1][2] = ' '; board[1][4] = ' '; board[1][6] = ' '; // Empty
+                board[2][1] = ' '; board[2][3] = ' '; board[2][5] = 'X'; board[2][7] = ' '; // One player X piece
+                board[3][0] = ' '; board[3][2] = ' '; board[3][4] = ' '; board[3][6] = ' '; // Empty row
+                board[4][1] = 'O'; board[4][3] = ' '; board[4][5] = ' '; board[4][7] = ' '; // Player O piece
+                board[5][0] = ' '; board[5][2] = ' '; board[5][4] = ' '; board[5][6] = ' '; // Empty
+                board[6][1] = ' '; board[6][3] = ' '; board[6][5] = ' '; board[6][7] = ' '; // Empty
+                board[7][0] = ' '; board[7][2] = ' '; board[7][4] = ' '; board[7][6] = ' '; // Bottom row empty
+
+            
         }
     }
-
-    // Player X
-    board[0][1] = 'X'; // Top Row
-    board[0][3] = 'X';
-    board[0][5] = 'X';
-    board[0][7] = 'X';
-
-    board[1][0] = 'X'; // Middle Row
-    board[1][2] = 'X';
-    board[1][4] = 'X';
-    board[1][6] = 'X';
-
-    board[2][1] = 'X'; // Bottom Row
-    board[2][3] = 'X';
-    board[2][5] = 'X';
-    board[2][7] = 'X';
-
-    // Player O
-    board[7][0] = 'O'; // Bottom Row
-    board[7][2] = 'O';
-    board[7][4] = 'O';
-    board[7][6] = 'O';
-
-    board[6][1] = 'O'; // Middle Row
-    board[6][3] = 'O';
-    board[6][5] = 'O';
-    board[6][7] = 'O';
-
-    board[5][0] = 'O'; // Top Row
-    board[5][2] = 'O';
-    board[5][4] = 'O';
-    board[5][6] = 'O';
 }
 
 
-// Prints Board with Current Values
-void printBoard(char board[SIZE][SIZE]) 
+void printBoard(char board[SIZE][SIZE]) // Prints Board with Current Values
 {
     cout << endl; // Space Above Board
     cout << "    A    B    C    D    E    F    G    H " << endl; // Coulmn Index for Board
@@ -70,77 +113,105 @@ void printBoard(char board[SIZE][SIZE])
     cout << endl; // Space After Board
 }
 
-int selectSpaceToMove(char columnSelectChar, int columnSelectInt)
-{
+bool isValidMove(char board[SIZE][SIZE], int fromRow, int fromCol, int toRow, int toCol, char player) {
+    // Check if destination is empty
+    if (board[toRow][toCol] != ' ') return false;
     
-    if(columnSelectChar == 'A')         {columnSelectInt = 0;}
-    else if(columnSelectChar == 'B')    {columnSelectInt = 1;}
-    else if(columnSelectChar == 'C')    {columnSelectInt = 2;}
-    else if(columnSelectChar == 'D')    {columnSelectInt = 3;}
-    else if(columnSelectChar == 'E')    {columnSelectInt = 4;}
-    else if(columnSelectChar == 'F')    {columnSelectInt = 5;}
-    else if(columnSelectChar == 'G')    {columnSelectInt = 6;}
-    else if(columnSelectChar == 'H')    {columnSelectInt = 7;}
-
-    return columnSelectInt;
+    // Check if destination is on a diagonal
+    int rowDiff = toRow - fromRow;
+    int colDiff = toCol - fromCol;
+    
+    // Basic move: one square diagonally
+    if (abs(rowDiff) == 1 && abs(colDiff) == 1) {
+        // X moves down, O moves up
+        if (player == 'X' && rowDiff > 0) return true;
+        if (player == 'O' && rowDiff < 0) return true;
+    }
+    
+    // Capture move: two squares diagonally
+    if (abs(rowDiff) == 2 && abs(colDiff) == 2) {
+        int jumpRow = fromRow + rowDiff/2;
+        int jumpCol = fromCol + colDiff/2;
+        char opponent = (player == 'X') ? 'O' : 'X';
+        
+        // Check if there's an opponent's piece to capture
+        if (board[jumpRow][jumpCol] == opponent) {
+            return true;
+        }
+    }
+    
+    return false;
 }
 
-// To move a piece
-void movePiece(char board[SIZE][SIZE]) 
-{
-    // Enter the desired piece to move
-    cout << "Select Column (letters): ";   // Enter the Column
-    char columnSelectChar;                 // Character for coulmn select A - H
-    cin >> columnSelectChar;               // Chosen Character
-    int columnSelectInt;                   // Column Index
+void makeMove(char board[SIZE][SIZE], int fromRow, int fromCol, int toRow, int toCol) {
+    // Move the piece
+    board[toRow][toCol] = board[fromRow][fromCol];
+    board[fromRow][fromCol] = ' ';
     
-    cout << "Select Row (numbers): ";      // Enter The Row
-    int rowSelect; 
-    cin >> rowSelect;
+    // If it was a capture move, remove the captured piece
+    if (abs(toRow - fromRow) == 2) {
+        int jumpRow = (fromRow + toRow) / 2;
+        int jumpCol = (fromCol + toCol) / 2;
+        board[jumpRow][jumpCol] = ' ';
+    }
+}
 
-    // Changes Letters into numbers to fit the column index
-    selectSpaceToMove(columnSelectChar,columnSelectInt);  
-
-
-    // Enter the targeted position to move to
-    cout << "Select space to move" << endl;
-    cout << "Select Column (letters): ";    // Enter the column for new position
-    char columnTargetChar;
-    cin >> columnTargetChar;
-    int columnTarget;
-
-    cout << "Select Row (numbers): ";      // Enter The Row for new position
-    int rowTarget; 
-    cin >> rowTarget;
+bool canCapture(char board[SIZE][SIZE], int row, int col, char player) {
+    // Check all possible capture directions
+    int directions[4][2] = {{2,2}, {2,-2}, {-2,2}, {-2,-2}};
     
-    // Changes Letters into numbers to fit the column index
-    selectSpaceToMove(columnTargetChar, columnTarget);  
-
-    for (int i = 0; i < SIZE; i++)  // i = Rows
-    {
-        for (int j = 0; j < SIZE; j++) // j = Coulmns
-        {
-            if (board[rowSelect][selectSpaceToMove(columnSelectChar, columnSelectInt)] == board[i][j] && board[i][j] != ' ')
-            {
-                // Piece is moved to new position
-                board[rowTarget][selectSpaceToMove(columnTargetChar, columnTarget)] = board[rowSelect][selectSpaceToMove(columnSelectChar, columnSelectInt)];
-                board[rowSelect][selectSpaceToMove(columnSelectChar, columnSelectInt)] = ' '; 
+    for (int i = 0; i < 4; i++) {
+        int newRow = row + directions[i][0];
+        int newCol = col + directions[i][1];
+        
+        if (newRow >= 0 && newRow < SIZE && newCol >= 0 && newCol < SIZE) {
+            if (isValidMove(board, row, col, newRow, newCol, player)) {
+                return true;
             }
         }
     }
+    return false;
 }
+
 
 
 
 int main()
 {
     char board[SIZE][SIZE]; // Create Board
-    intializeBoard(board); // Call intializeBoard to start
+    char currentPlayer = 'X';
+    bool gameOver = false;
     
+    displayTitleScreen(); // Add this line to show the title screen
+    initializeBoard(board); // Call intializeBoard to start
 
-    printBoard(board); // Print Board with current values
-
-    movePiece(board); // Move Piece
-
-    printBoard(board);
-}
+    while (!gameOver) {
+            printBoard(board);
+            
+            cout << "Player " << currentPlayer << "'s turn\n";
+            
+            // Get move input
+            char fromCol, toCol;
+            int fromRow, toRow;
+            
+            cout << "Enter move (e.g., B2 C3): ";
+            cin >> fromCol >> fromRow >> toCol >> toRow;
+            
+            // Convert input to array indices
+            int fromColIdx = toupper(fromCol) - 'A';
+            int toColIdx = toupper(toCol) - 'A';
+            
+            if (isValidMove(board, fromRow, fromColIdx, toRow, toColIdx, currentPlayer)) {
+                makeMove(board, fromRow, fromColIdx, toRow, toColIdx);
+                currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+            } else {
+                cout << "Invalid move! Press Enter to try again.";
+                cin.ignore();
+                cin.get();
+            }
+            
+            // future win-condition-check here
+        }
+        
+        return 0;
+    }
