@@ -34,7 +34,7 @@ void displayTitleScreen() {
     cin.ignore();
 }
 
-void initializeBoard(char board[SIZE][SIZE])
+void initializeBoard(char board[SIZE][SIZE]) // Jeremy Sanders
 {
     for (int i = 0; i < SIZE; i++)  // i = Rows
     {
@@ -43,57 +43,45 @@ void initializeBoard(char board[SIZE][SIZE])
             board[i][j] = ' '; // Start with all cells as empty
 
             // Player X
-//            board[0][1] = 'X'; // Top Row
-//            board[0][3] = 'X';
-//            board[0][5] = 'X';
-//            board[0][7] = 'X';
-//
-//            board[1][0] = 'X'; // Middle Row
-//            board[1][2] = 'X';
-//            board[1][4] = 'X';
-//            board[1][6] = 'X';
-//
-//            board[2][1] = 'X'; // Bottom Row
-//            board[2][3] = 'X';
-//            board[2][5] = 'X';
-//            board[2][7] = 'X';
-//
-//            //board[3][4] = 'A'; // Archerer (test piece)
-//            
-//            // Player O
-//            board[7][0] = 'O'; // Bottom Row
-//            board[7][2] = 'O';
-//            board[7][4] = 'O';
-//            board[7][6] = 'O';
-//
-//            board[6][1] = 'O'; // Middle Row
-//            board[6][3] = 'O';
-//            board[6][5] = 'O';
-//            board[6][7] = 'O';
-//
-//            board[5][0] = 'O'; // Top Row
-//            board[5][2] = 'O';
-//            board[5][4] = 'O';
-//            board[5][6] = 'O';
-            
-            
-            // Simulate near-endgame
-                board[0][1] = ' '; board[0][3] = ' '; board[0][5] = ' '; board[0][7] = ' '; // Top row empty
-                board[1][0] = ' '; board[1][2] = ' '; board[1][4] = ' '; board[1][6] = ' '; // Empty
-                board[2][1] = ' '; board[2][3] = ' '; board[2][5] = 'X'; board[2][7] = ' '; // One player X piece
-                board[3][0] = ' '; board[3][2] = ' '; board[3][4] = ' '; board[3][6] = ' '; // Empty row
-                board[4][1] = 'O'; board[4][3] = ' '; board[4][5] = ' '; board[4][7] = ' '; // Player O piece
-                board[5][0] = ' '; board[5][2] = ' '; board[5][4] = ' '; board[5][6] = ' '; // Empty
-                board[6][1] = ' '; board[6][3] = ' '; board[6][5] = ' '; board[6][7] = ' '; // Empty
-                board[7][0] = ' '; board[7][2] = ' '; board[7][4] = ' '; board[7][6] = ' '; // Bottom row empty
+           board[0][1] = 'X'; // Top Row
+           board[0][3] = 'X';
+           board[0][5] = 'X';
+           board[0][7] = 'X';
 
+           board[1][0] = 'X'; // Middle Row
+           board[1][2] = 'X';
+           board[1][4] = 'X';
+           board[1][6] = 'X';
+
+           board[2][1] = 'X'; // Bottom Row
+           board[2][3] = 'X';
+           board[2][5] = 'X';
+           board[2][7] = 'X';
+
+           //board[3][4] = 'A'; // Archerer (test piece)
+           
+           // Player O
+           board[7][0] = 'O'; // Bottom Row
+           board[7][2] = 'O';
+           board[7][4] = 'O';
+           board[7][6] = 'O';
+
+           board[6][1] = 'O'; // Middle Row
+           board[6][3] = 'O';
+           board[6][5] = 'O';
+           board[6][7] = 'O';
+
+           board[5][0] = 'O'; // Top Row
+           board[5][2] = 'O';
+           board[5][4] = 'O';
+           board[5][6] = 'O';
             
         }
     }
 }
 
 
-void printBoard(char board[SIZE][SIZE]) // Prints Board with Current Values
+void printBoard(char board[SIZE][SIZE]) // Prints Board with Current Values by Jeremy Sanders
 {
     cout << endl; // Space Above Board
     cout << "    A    B    C    D    E    F    G    H " << endl; // Coulmn Index for Board
