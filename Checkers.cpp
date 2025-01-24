@@ -182,8 +182,12 @@ int main()
             char fromCol, toCol;
             int fromRow, toRow;
             
-            cout << "Enter move (e.g., B2 C3): ";
-            cin >> fromCol >> fromRow >> toCol >> toRow;
+            // cout << "Enter move (e.g., B2 C3): ";
+            // cin >> fromCol >> fromRow >> toCol >> toRow;
+            cout << "Move from (B3): ";
+            cin >> fromCol >> fromRow;
+            cout << "Move to (C4): ";
+            cin >> toCol >> toRow;
             
             // Convert input to array indices
             int fromColIdx = toupper(fromCol) - 'A';
