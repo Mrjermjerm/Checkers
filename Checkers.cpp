@@ -2,8 +2,6 @@
 //  main.cpp
 //  Sprint 1 - Checkers
 //
-//  Created by Bryce Langford on 1/17/25.
-//
 
 #include <iostream>
 using namespace std;
