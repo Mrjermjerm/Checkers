@@ -88,7 +88,7 @@ void printBoard(char board[SIZE][SIZE]) // Prints Board with Current Values by J
     cout << "  |----|----|----|----|----|----|----|----|\n";
     for (int i = 0; i < SIZE; i++)
     {
-        cout << i << " | "; // Prints Row Index followed By Spacing for Board
+        cout << i + 1 << " | "; // Prints Row Index followed By Spacing for Board
         for (int j = 0; j < SIZE; j++)
         {
             cout << board[i][j];
@@ -182,7 +182,7 @@ int main()
             char fromCol, toCol;
             int fromRow, toRow;
             
-            // cout << "Enter move (e.g., B2 C3): ";
+            // cout << "Enter move (e.g., B3 C4): ";
             // cin >> fromCol >> fromRow >> toCol >> toRow;
             cout << "Move from (B3): ";
             cin >> fromCol >> fromRow;
@@ -192,6 +192,8 @@ int main()
             // Convert input to array indices
             int fromColIdx = toupper(fromCol) - 'A';
             int toColIdx = toupper(toCol) - 'A';
+            fromRow--; // Adjust for 0-based index
+            toRow--;
             
             if (isValidMove(board, fromRow, fromColIdx, toRow, toColIdx, currentPlayer)) {
                 makeMove(board, fromRow, fromColIdx, toRow, toColIdx);
