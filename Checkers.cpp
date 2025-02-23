@@ -1,9 +1,12 @@
 
 #include <iostream>
+#include <limits>
 using namespace std;
 
 
 const int SIZE = 8; // Checker Board 8 x 8
+
+
 
 void intializeBoard(char board[SIZE][SIZE]) 
 {
@@ -49,6 +52,8 @@ void intializeBoard(char board[SIZE][SIZE])
 }
 
 
+
+
 // Prints Board with Current Values
 void printBoard(char board[SIZE][SIZE]) 
 {
@@ -70,6 +75,10 @@ void printBoard(char board[SIZE][SIZE])
     cout << endl; // Space After Board
 }
 
+
+
+
+// Convert Column letters into index
 int selectSpaceToMove(char columnSelectChar, int columnSelectInt)
 {
     
@@ -85,22 +94,83 @@ int selectSpaceToMove(char columnSelectChar, int columnSelectInt)
     return columnSelectInt;
 }
 
+
+
+// Switch Players
+bool switchplayer(bool player)
+{
+    if (player == true)
+    {
+        player = false;
+        return player; // Player O
+    }
+    else
+    {
+        player = true;
+        return player;  // Player X
+    }
+}
+
+
+
+
 // To move a piece
-void movePiece(char board[SIZE][SIZE]) 
+void movePiece(char board[SIZE][SIZE], bool player) 
 {
     // Enter the desired piece to move
     cout << "Select Column (letters): ";   // Enter the Column
     char columnSelectChar;                 // Character for coulmn select A - H
-    cin >> columnSelectChar;               // Chosen Character
-    int columnSelectInt;                   // Column Index
+    
+    while(true)                            // Check for correct input
+    {
+        cin >> columnSelectChar;           // Chosen Column
+
+        if (cin.fail() || cin.peek() != '\n')           
+        {
+            // Clear the error flag
+            cin.clear();
+
+            // Ignore remaining characters in the input buffer
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            cout << "Invalid input! Please enter a single character: ";
+        }
+        else if (isdigit(columnSelectChar))
+        {
+            // If the input is not an integer, handle the error
+            cout << "Invalid input! That's not an integer." << endl;
+            
+            // Clear the error flag and ignore the invalid input
+            cin.clear();  // Clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Ignore the remaining invalid input
+        }
+        else
+        {
+            // Correct Input
+            break;
+        }
+    }
+    
+    int columnSelectInt;                   // Column Index replaced by columnSelectChar
     
     cout << "Select Row (numbers): ";      // Enter The Row
     int rowSelect; 
     cin >> rowSelect;
 
     // Changes Letters into numbers to fit the column index
-    selectSpaceToMove(columnSelectChar,columnSelectInt);  
+    columnSelectInt = selectSpaceToMove(columnSelectChar, 0);  
 
+    // Check if the selected piece belongs to the correct player
+    char playerSymbol = player ? 'X' : 'O';
+    char opponentSymbol = player ? 'O' : 'X';
+
+    // Check if the selected piece belongs to the correct player
+    if ((player == true && board[rowSelect][columnSelectInt] != 'X') ||
+        (player == false && board[rowSelect][columnSelectInt] != 'O'))
+    {
+        cout << "Selected wrong piece" << endl;
+        return; // Exit immediately
+    }
 
     // Enter the targeted position to move to
     cout << "Select space to move" << endl;
@@ -114,24 +184,98 @@ void movePiece(char board[SIZE][SIZE])
     cin >> rowTarget;
     
     // Changes Letters into numbers to fit the column index
-    selectSpaceToMove(columnTargetChar, columnTarget);  
+    columnTarget = selectSpaceToMove(columnTargetChar, 0);
 
-    for (int i = 0; i < SIZE; i++)  // i = Rows
+    // Diagonal Movement
+    int rowDiff = rowTarget - rowSelect;
+    int colDiff = columnTarget - columnSelectInt; 
+    
+    if (abs(rowDiff) != abs(colDiff)) // Must be a diagonal move
     {
-        for (int j = 0; j < SIZE; j++) // j = Coulmns
+        cout << "Invalid move! Pieces must move diagonally.\n";
+        return;
+    }
+
+    // Ensure the piece moves in the correct direction
+    if ((player && rowDiff != 1) || (!player && rowDiff != -1)) 
+    {
+        cout << "Invalid move! You can only move forward.\n";
+        return;
+    }
+
+    // Ensure the target space is empty
+    if (board[rowTarget][columnTarget] != ' ')
+    {
+        cout << "Invalid move! Target space is occupied.\n";
+        return;
+    }
+
+    // Capture logic (jumping over an opponent)
+    if (abs(rowDiff) == 2) 
+    {
+        int jumpedRow = (rowSelect + rowTarget) / 2;
+        int jumpedCol = (columnSelectInt + columnTarget) / 2;
+
+        if (board[jumpedRow][jumpedCol] == opponentSymbol) 
         {
-            if (board[rowSelect][selectSpaceToMove(columnSelectChar, columnSelectInt)] == board[i][j] && board[i][j] != ' ')
-            {
-                // Piece is moved to new position
-                board[rowTarget][selectSpaceToMove(columnTargetChar, columnTarget)] = board[rowSelect][selectSpaceToMove(columnSelectChar, columnSelectInt)];
-                board[rowSelect][selectSpaceToMove(columnSelectChar, columnSelectInt)] = ' '; 
-            }
+            board[jumpedRow][jumpedCol] = ' '; // Remove captured piece
+        }
+        else 
+        {
+            cout << "Invalid jump! No opponent piece to capture.\n";
+            return;
         }
     }
+    
+    // Move the piece
+    board[rowTarget][columnTarget] = board[rowSelect][columnSelectInt];
+    board[rowSelect][columnSelectInt] = ' ';
 }
 
 
 
+
+// Check Winner
+int checkWinner(char board[SIZE][SIZE], int game)
+{
+    int countX = 0;
+    int countO = 0;
+    
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+
+            if (board[i][j] == 'X')
+            {
+                countX++;
+            }
+            if (board[i][j] == 'O')
+            {
+                countO++;
+            } 
+        }
+    } 
+
+    if (countO == 0)
+    {
+        cout << "Congratulations to player X!" << endl;
+        return 1;
+    }
+    if (countX == 0)
+    { 
+        cout << "Congratulations to player O!" << endl;
+        return 1;
+    }
+
+    return 0;
+}
+
+
+
+
+
+// Main
 int main()
 {
     char board[SIZE][SIZE]; // Create Board
@@ -140,7 +284,25 @@ int main()
 
     printBoard(board); // Print Board with current values
 
-    movePiece(board); // Move Piece
+    cout << "Player X first:" << endl;
 
-    printBoard(board);
+    
+
+    int game = 0;
+    bool player = true;
+
+    while (game == 0)
+    {
+        movePiece(board, player); // Move Piece
+
+        printBoard(board);
+
+        game = checkWinner(board, game);
+
+        if (game == 0)
+        {
+            // Switch player
+            player = switchplayer(player);
+        }
+    }
 }
