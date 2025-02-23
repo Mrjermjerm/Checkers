@@ -115,8 +115,17 @@ bool switchplayer(bool player)
 
 
 // To move a piece
-void movePiece(char board[SIZE][SIZE], bool player) 
+void movePiece(char board[SIZE][SIZE], bool player, bool &dontSwitch) 
 {
+    if (player == true)
+    {
+        cout << "Player X" << endl;
+    }
+    else
+    {
+        cout << "Player O" << endl;
+    }
+    
     // Enter the desired piece to move
     cout << "Select Column (letters): ";   // Enter the Column
     char columnSelectChar;                 // Character for coulmn select A - H
@@ -169,6 +178,7 @@ void movePiece(char board[SIZE][SIZE], bool player)
         (player == false && board[rowSelect][columnSelectInt] != 'O'))
     {
         cout << "Selected wrong piece" << endl;
+        dontSwitch = true;
         return; // Exit immediately
     }
 
@@ -193,6 +203,7 @@ void movePiece(char board[SIZE][SIZE], bool player)
     if (abs(rowDiff) != abs(colDiff)) // Must be a diagonal move
     {
         cout << "Invalid move! Pieces must move diagonally.\n";
+        dontSwitch = true;
         return;
     }
 
@@ -200,6 +211,7 @@ void movePiece(char board[SIZE][SIZE], bool player)
     if ((player && rowDiff != 1) || (!player && rowDiff != -1)) 
     {
         cout << "Invalid move! You can only move forward.\n";
+        dontSwitch = true;
         return;
     }
 
@@ -207,6 +219,7 @@ void movePiece(char board[SIZE][SIZE], bool player)
     if (board[rowTarget][columnTarget] != ' ')
     {
         cout << "Invalid move! Target space is occupied.\n";
+        dontSwitch = true;
         return;
     }
 
@@ -223,6 +236,7 @@ void movePiece(char board[SIZE][SIZE], bool player)
         else 
         {
             cout << "Invalid jump! No opponent piece to capture.\n";
+            dontSwitch = true;
             return;
         }
     }
@@ -283,9 +297,6 @@ int main()
     
 
     printBoard(board); // Print Board with current values
-
-    cout << "Player X first:" << endl;
-
     
 
     int game = 0;
@@ -293,13 +304,15 @@ int main()
 
     while (game == 0)
     {
-        movePiece(board, player); // Move Piece
+        bool dontSwitch = false;
+        
+        movePiece(board, player, dontSwitch); // Move Piece
 
         printBoard(board);
 
         game = checkWinner(board, game);
 
-        if (game == 0)
+        if (game == 0 && dontSwitch == false)
         {
             // Switch player
             player = switchplayer(player);
